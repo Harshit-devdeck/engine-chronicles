@@ -34,12 +34,14 @@ const Index = () => {
       <Header searchQuery={searchQuery} onSearchChange={setSearchQuery} />
 
       <main>
-        {/* Hero section */}
-        <section className="max-w-[1600px] mx-auto px-8 pt-20 pb-12">
+        {/* Hero section with gradient overlay */}
+        <section className="relative max-w-[1600px] mx-auto px-8 pt-20 pb-14">
+          <div className="absolute inset-0 gradient-hero pointer-events-none" />
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: "easeOut" }}
+            className="relative"
           >
             <p className="text-[11px] font-sans font-medium tracking-[0.3em] uppercase text-accent mb-4">
               A Curated Automotive History
@@ -47,7 +49,7 @@ const Index = () => {
             <h2 className="font-serif text-5xl md:text-6xl font-bold text-foreground leading-[1.1] max-w-2xl">
               The Evolution of
               <br />
-              <span className="bg-gradient-to-r from-foreground/80 to-foreground/40 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-foreground/80 via-foreground/60 to-accent bg-clip-text text-transparent">
                 Automotive Engines
               </span>
             </h2>
@@ -86,43 +88,29 @@ const Index = () => {
         <section className="max-w-[1600px] mx-auto px-8 pb-20">
           <div className="border-t border-border/40 pt-12">
             <div className="grid grid-cols-3 gap-12 max-w-lg">
-              <motion.div
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ delay: 0 }}
-                viewport={{ once: true }}
-              >
-                <p className="font-serif text-4xl font-bold text-foreground">{posts.length}</p>
-                <p className="text-[10px] font-sans text-muted-foreground mt-1.5 tracking-[0.2em] uppercase">
-                  Engines Documented
-                </p>
-              </motion.div>
-              <motion.div
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ delay: 0.1 }}
-                viewport={{ once: true }}
-              >
-                <p className="font-serif text-4xl font-bold text-foreground">{companies.length}</p>
-                <p className="text-[10px] font-sans text-muted-foreground mt-1.5 tracking-[0.2em] uppercase">
-                  Manufacturers
-                </p>
-              </motion.div>
-              <motion.div
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ delay: 0.2 }}
-                viewport={{ once: true }}
-              >
-                <p className="font-serif text-4xl font-bold text-foreground">
-                  {posts.length > 0
+              {[
+                { value: posts.length, label: "Engines Documented" },
+                { value: companies.length, label: "Manufacturers" },
+                {
+                  value: posts.length > 0
                     ? `${Math.max(...posts.map((p) => p.year)) - Math.min(...posts.map((p) => p.year))}`
-                    : "—"}
-                </p>
-                <p className="text-[10px] font-sans text-muted-foreground mt-1.5 tracking-[0.2em] uppercase">
-                  Years of History
-                </p>
-              </motion.div>
+                    : "—",
+                  label: "Years of History",
+                },
+              ].map((stat, i) => (
+                <motion.div
+                  key={stat.label}
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  transition={{ delay: i * 0.1 }}
+                  viewport={{ once: true }}
+                >
+                  <p className="font-serif text-4xl font-bold text-foreground">{stat.value}</p>
+                  <p className="text-[10px] font-sans text-muted-foreground mt-1.5 tracking-[0.2em] uppercase">
+                    {stat.label}
+                  </p>
+                </motion.div>
+              ))}
             </div>
           </div>
         </section>

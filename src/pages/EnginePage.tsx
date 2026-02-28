@@ -64,12 +64,11 @@ const EnginePage = () => {
       >
         {/* Article header */}
         <header className="mb-14">
-          {/* Company badges */}
           <div className="flex items-center gap-3 mb-6">
             {post.companies?.map((c) => (
               <span
                 key={c.id}
-                className="text-[11px] font-sans font-semibold tracking-[0.15em] uppercase px-3 py-1.5 rounded-lg"
+                className="text-[11px] font-sans font-semibold tracking-[0.15em] uppercase px-3 py-1.5 rounded-xl"
                 style={{
                   backgroundColor: c.color + "12",
                   color: c.color,
@@ -85,21 +84,18 @@ const EnginePage = () => {
             </span>
           </div>
 
-          {/* Title */}
           <h1 className="font-serif text-[40px] md:text-[48px] font-bold text-foreground leading-[1.12] mb-5 tracking-tight">
             {post.title}
           </h1>
 
-          {/* Subtitle */}
           <p className="font-sans text-[17px] text-muted-foreground leading-[1.65] max-w-[560px]">
             {post.preview_text}
           </p>
 
-          {/* Engine name highlight */}
           <div className="mt-8 flex items-center gap-4">
             <div className="flex h-[3px] w-16 rounded-full overflow-hidden">
               {post.companies?.map((c) => (
-                <div key={c.id} className="flex-1" style={{ backgroundColor: c.color, opacity: 0.6 }} />
+                <div key={c.id} className="flex-1" style={{ background: `linear-gradient(90deg, ${c.color}80, ${c.color}40)` }} />
               ))}
             </div>
             <span className="text-[11px] font-sans font-medium tracking-[0.2em] uppercase text-muted-foreground">
@@ -110,7 +106,7 @@ const EnginePage = () => {
 
         {/* Hero image */}
         {post.image_url && (
-          <div className="mb-14 rounded-2xl overflow-hidden shadow-elevated">
+          <div className="mb-14 rounded-2xl overflow-hidden shadow-elevated gradient-border">
             <img
               src={post.image_url}
               alt={post.engine_name}
@@ -136,7 +132,7 @@ const EnginePage = () => {
         {specs && Object.keys(specs).length > 0 && (
           <section className="mb-16">
             <div className="flex items-center gap-3 mb-8">
-              <div className="w-8 h-px bg-border" />
+              <div className="w-8 h-px bg-gradient-to-r from-accent/60 to-transparent" />
               <h2 className="font-serif text-[22px] font-semibold text-foreground tracking-tight">
                 Technical Specifications
               </h2>
@@ -145,7 +141,7 @@ const EnginePage = () => {
               {Object.entries(specs).map(([key, value]) => (
                 <div
                   key={key}
-                  className="rounded-xl p-4 border border-border/40 bg-card hover:shadow-soft transition-shadow duration-300"
+                  className="rounded-xl p-4 gradient-card gradient-border hover:shadow-soft transition-shadow duration-300"
                 >
                   <p className="text-[9px] font-sans font-medium tracking-[0.2em] uppercase text-muted-foreground mb-1.5">
                     {key.replace(/_/g, " ")}
@@ -161,7 +157,7 @@ const EnginePage = () => {
         {post.vehicles && post.vehicles.length > 0 && (
           <section className="mb-16">
             <div className="flex items-center gap-3 mb-8">
-              <div className="w-8 h-px bg-border" />
+              <div className="w-8 h-px bg-gradient-to-r from-accent/60 to-transparent" />
               <h2 className="font-serif text-[22px] font-semibold text-foreground tracking-tight">
                 Notable Vehicles
               </h2>
@@ -183,7 +179,7 @@ const EnginePage = () => {
         {relatedEngines.length > 0 && (
           <section className="mb-16">
             <div className="flex items-center gap-3 mb-8">
-              <div className="w-8 h-px bg-border" />
+              <div className="w-8 h-px bg-gradient-to-r from-accent/60 to-transparent" />
               <h2 className="font-serif text-[22px] font-semibold text-foreground tracking-tight">
                 Related Engines
               </h2>
@@ -193,17 +189,15 @@ const EnginePage = () => {
                 <Link
                   key={engine.id}
                   to={`/engine/${engine.slug}`}
-                  className="group flex items-center gap-5 p-5 rounded-xl bg-card border border-border/30 hover:shadow-soft hover:border-border/60 transition-all duration-300"
+                  className="group flex items-center gap-5 p-5 rounded-xl gradient-card gradient-border hover:shadow-soft transition-all duration-300"
                 >
-                  {/* Color dots */}
                   <div className="flex flex-col gap-1">
                     {engine.companies?.map((c: any) => (
                       <div key={c.id} className="w-2 h-2 rounded-full" style={{ backgroundColor: c.color }} />
                     ))}
                   </div>
-
                   <div className="flex-1 min-w-0">
-                    <p className="font-serif text-[16px] font-semibold text-foreground group-hover:text-foreground/80 transition-colors leading-tight">
+                    <p className="font-serif text-[16px] font-semibold text-foreground group-hover:text-accent transition-colors leading-tight">
                       {engine.engine_name}
                     </p>
                     <div className="flex items-center gap-2 mt-1">
@@ -215,9 +209,8 @@ const EnginePage = () => {
                       <span className="text-[11px] text-muted-foreground">· {engine.year}</span>
                     </div>
                   </div>
-
                   <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-sans tracking-wider uppercase text-muted-foreground px-2.5 py-1 rounded-lg bg-secondary/50">
+                    <span className="text-[10px] font-sans tracking-wider uppercase text-muted-foreground px-2.5 py-1 rounded-lg bg-secondary/50 border border-border/30">
                       {engine.relationship_type}
                     </span>
                     <ArrowRight className="w-3.5 h-3.5 text-muted-foreground group-hover:text-foreground group-hover:translate-x-0.5 transition-all" />
@@ -229,7 +222,6 @@ const EnginePage = () => {
         )}
       </motion.article>
 
-      {/* Footer */}
       <footer className="border-t border-border/30 py-10">
         <div className="max-w-[720px] mx-auto px-8 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 text-[11px] font-sans text-muted-foreground hover:text-foreground transition-colors">
