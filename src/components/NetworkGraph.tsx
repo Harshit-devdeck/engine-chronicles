@@ -14,8 +14,8 @@ interface NodePosition {
   y: number;
 }
 
-const NODE_RADIUS = 140;
-const LINK_DISTANCE = 320;
+const NODE_RADIUS = 160;
+const LINK_DISTANCE = 380;
 
 function computeLayout(
   posts: Post[],
@@ -45,13 +45,13 @@ function computeLayout(
 
   groups.forEach(([, groupPosts], gi) => {
     const angle = (gi / groups.length) * Math.PI * 2 - Math.PI / 2;
-    const groupRadius = 250 + groups.length * 35;
+    const groupRadius = 300 + groups.length * 45;
     const gx = centerX + Math.cos(angle) * groupRadius;
     const gy = centerY + Math.sin(angle) * groupRadius;
 
     const sorted = [...groupPosts].sort((a, b) => a.year - b.year || a.engine_name.localeCompare(b.engine_name));
     sorted.forEach((p, i) => {
-      const spread = sorted.length > 1 ? (i / (sorted.length - 1) - 0.5) * 220 : 0;
+      const spread = sorted.length > 1 ? (i / (sorted.length - 1) - 0.5) * 280 : 0;
       const perpAngle = angle + Math.PI / 2;
       const offsetX = ((i % 3) - 1) * 15;
       const offsetY = (Math.floor(i / 3) % 2 === 0 ? 1 : -1) * 10;
@@ -324,7 +324,7 @@ const NetworkGraph = ({ posts, relationships, selectedCompanies }: NetworkGraphP
   }
 
   return (
-    <div className="relative w-full" style={{ height: "calc(100vh - 200px)", minHeight: 500 }}>
+    <div className="relative w-full" style={{ height: "calc(100vh - 120px)", minHeight: 650 }}>
       <div
         ref={containerRef}
         className="w-full h-full overflow-hidden cursor-grab active:cursor-grabbing rounded-2xl border border-border/40 gradient-card"
@@ -508,9 +508,9 @@ const NetworkGraph = ({ posts, relationships, selectedCompanies }: NetworkGraphP
 
                   <foreignObject
                     x={pos.x - NODE_RADIUS}
-                    y={pos.y - 80}
+                    y={pos.y - 90}
                     width={NODE_RADIUS * 2}
-                    height={160}
+                    height={180}
                     className="overflow-visible"
                   >
                     <div
@@ -576,12 +576,12 @@ const NetworkGraph = ({ posts, relationships, selectedCompanies }: NetworkGraphP
                           </span>
                         </div>
 
-                        <h3 className="font-serif text-[14px] font-semibold text-foreground leading-tight mb-1">
+                        <h3 className="font-serif text-[15px] font-semibold text-foreground leading-tight mb-1.5">
                           {post.engine_name}
                         </h3>
 
                         {post.preview_text && (
-                          <p className="text-[11px] font-sans text-muted-foreground leading-relaxed line-clamp-2">
+                          <p className="text-[12px] font-sans text-muted-foreground leading-relaxed line-clamp-2">
                             {post.preview_text}
                           </p>
                         )}
