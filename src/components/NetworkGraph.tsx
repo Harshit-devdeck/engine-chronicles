@@ -208,9 +208,10 @@ const NetworkGraph = ({ posts, relationships, selectedCompanies }: NetworkGraphP
 
   const relationshipTypeColor = (type: string) => {
     switch (type) {
-      case "evolution": return "hsl(var(--accent))";
-      case "collaboration": return "hsl(var(--steel))";
-      case "licensing": return "hsl(var(--gold))";
+      case "evolution": return "hsl(var(--rel-evolution))";
+      case "collaboration": return "hsl(var(--rel-collaboration))";
+      case "licensing": return "hsl(var(--rel-licensing))";
+      case "modification": return "hsl(var(--rel-modification))";
       default: return "hsl(var(--border))";
     }
   };

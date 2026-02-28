@@ -61,6 +61,12 @@ export default {
         cream: "hsl(var(--cream))",
         "warm-gray": "hsl(var(--warm-gray))",
         "surface-elevated": "hsl(var(--surface-elevated))",
+        "rel-evolution": "hsl(var(--rel-evolution))",
+        "rel-collaboration": "hsl(var(--rel-collaboration))",
+        "rel-licensing": "hsl(var(--rel-licensing))",
+        "rel-modification": "hsl(var(--rel-modification))",
+        "compare-a": "hsl(var(--compare-a))",
+        "compare-b": "hsl(var(--compare-b))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",

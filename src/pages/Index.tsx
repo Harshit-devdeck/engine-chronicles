@@ -4,6 +4,7 @@ import { usePosts, useCompanies, useEngineRelationships } from "@/hooks/use-engi
 import Header from "@/components/Header";
 import CompanyFilter from "@/components/CompanyFilter";
 import NetworkGraph from "@/components/NetworkGraph";
+import EngineComparison from "@/components/EngineComparison";
 
 const Index = () => {
   const { data: posts = [], isLoading: postsLoading } = usePosts();
@@ -11,6 +12,7 @@ const Index = () => {
   const { data: relationships = [] } = useEngineRelationships();
   const [selectedCompanies, setSelectedCompanies] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [activeTab, setActiveTab] = useState<"network" | "compare">("network");
 
   const filteredBySearch = useMemo(() => {
     if (!searchQuery.trim()) return posts;
@@ -44,13 +46,13 @@ const Index = () => {
             className="relative"
           >
             <p className="text-[11px] font-sans font-medium tracking-[0.3em] uppercase text-accent mb-4">
-              Interactive Knowledge Network
+              Interactive Knowledge Platform
             </p>
             <h2 className="font-serif text-5xl md:text-6xl font-bold text-foreground leading-[1.1] max-w-2xl">
               Engine Lineage
               <br />
-              <span className="bg-gradient-to-r from-foreground/80 via-foreground/60 to-accent bg-clip-text text-transparent">
-                Network Graph
+              <span className="bg-gradient-to-r from-foreground/80 via-accent to-accent/60 bg-clip-text text-transparent">
+                Explorer
               </span>
             </h2>
             <p className="mt-5 font-sans text-[15px] text-muted-foreground max-w-md leading-[1.7]">
@@ -59,30 +61,62 @@ const Index = () => {
           </motion.div>
         </section>
 
-        {/* Company filter */}
-        <section className="max-w-[1600px] mx-auto px-8 pb-6">
-          <CompanyFilter
-            companies={companies}
-            selected={selectedCompanies}
-            onToggle={toggleCompany}
-            onClearAll={() => setSelectedCompanies([])}
-          />
+        {/* Tab switcher */}
+        <section className="max-w-[1600px] mx-auto px-8 pb-4">
+          <div className="flex items-center gap-1 p-1 rounded-xl bg-secondary/50 border border-border/40 w-fit">
+            {[
+              { key: "network" as const, label: "Network Graph" },
+              { key: "compare" as const, label: "Compare Engines" },
+            ].map((tab) => (
+              <button
+                key={tab.key}
+                onClick={() => setActiveTab(tab.key)}
+                className={`px-5 py-2.5 rounded-lg text-[12px] font-sans font-medium tracking-wide transition-all duration-300 ${
+                  activeTab === tab.key
+                    ? "bg-background text-foreground shadow-soft"
+                    : "text-muted-foreground hover:text-foreground/70"
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
         </section>
 
-        {/* Network Graph */}
-        <section className="max-w-[1600px] mx-auto px-8 pb-16">
-          {postsLoading ? (
-            <div className="flex items-center justify-center py-24">
-              <div className="w-5 h-5 rounded-full border-2 border-accent border-t-transparent animate-spin" />
-            </div>
-          ) : (
-            <NetworkGraph
-              posts={filteredBySearch}
-              relationships={relationships}
-              selectedCompanies={selectedCompanies}
-            />
-          )}
-        </section>
+        {activeTab === "network" && (
+          <>
+            {/* Company filter */}
+            <section className="max-w-[1600px] mx-auto px-8 pb-6">
+              <CompanyFilter
+                companies={companies}
+                selected={selectedCompanies}
+                onToggle={toggleCompany}
+                onClearAll={() => setSelectedCompanies([])}
+              />
+            </section>
+
+            {/* Network Graph */}
+            <section className="max-w-[1600px] mx-auto px-8 pb-16">
+              {postsLoading ? (
+                <div className="flex items-center justify-center py-24">
+                  <div className="w-5 h-5 rounded-full border-2 border-accent border-t-transparent animate-spin" />
+                </div>
+              ) : (
+                <NetworkGraph
+                  posts={filteredBySearch}
+                  relationships={relationships}
+                  selectedCompanies={selectedCompanies}
+                />
+              )}
+            </section>
+          </>
+        )}
+
+        {activeTab === "compare" && (
+          <section className="max-w-[1200px] mx-auto px-8 pb-16 pt-4">
+            <EngineComparison posts={posts} />
+          </section>
+        )}
 
         {/* Stats section */}
         <section className="max-w-[1600px] mx-auto px-8 pb-20">
