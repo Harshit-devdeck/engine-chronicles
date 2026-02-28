@@ -5,7 +5,6 @@ import Header from "@/components/Header";
 import CompanyFilter from "@/components/CompanyFilter";
 import NetworkGraph from "@/components/NetworkGraph";
 import EngineComparison from "@/components/EngineComparison";
-import HeroAsciiOne from "@/components/ui/hero-ascii-one";
 
 const Index = () => {
   const { data: posts = [], isLoading: postsLoading } = usePosts();
@@ -34,7 +33,6 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <HeroAsciiOne />
       <Header searchQuery={searchQuery} onSearchChange={setSearchQuery} />
 
       <main>
