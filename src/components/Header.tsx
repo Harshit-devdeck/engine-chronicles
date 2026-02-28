@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Search } from "lucide-react";
 import { useState } from "react";
-import ThemeToggle from "./ThemeToggle";
+
 
 interface HeaderProps {
   searchQuery: string;
@@ -57,7 +57,7 @@ const Header = ({ searchQuery, onSearchChange }: HeaderProps) => {
               }`}
             />
           </div>
-          <ThemeToggle />
+          
         </div>
       </div>
     </header>
