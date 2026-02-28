@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import CompanyFilter from "@/components/CompanyFilter";
 import NetworkGraph from "@/components/NetworkGraph";
 import EngineComparison from "@/components/EngineComparison";
+import HeroAsciiOne from "@/components/ui/hero-ascii-one";
 
 const Index = () => {
   const { data: posts = [], isLoading: postsLoading } = usePosts();
@@ -33,9 +34,9 @@ const Index = () => {
 
   return (
     <div className="relative min-h-screen bg-background">
-      {/* 3D Asset Background Placeholder */}
-      <div className="absolute inset-0 z-0 opacity-40 pointer-events-none">
-        {/* Placeholder for 3D Engine Canvas */}
+      {/* 3D Asset Background */}
+      <div className="absolute inset-0 z-0 opacity-30 pointer-events-none">
+        <HeroAsciiOne />
       </div>
 
       <div className="relative z-10">
