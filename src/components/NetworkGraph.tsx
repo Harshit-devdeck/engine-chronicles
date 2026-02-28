@@ -41,23 +41,29 @@ function computeLayout(
   });
 
   const groups = Array.from(companyGroups.entries());
+  // Sort groups alphabetically for deterministic order
+  groups.sort((a, b) => a[0].localeCompare(b[0]));
   const centerX = 600;
   const centerY = 450;
 
-  // Place groups in a circle, nodes within each group spread vertically by year
+  // Place groups in a circle, nodes within each group spread by year (deterministic)
   groups.forEach(([, groupPosts], gi) => {
     const angle = (gi / groups.length) * Math.PI * 2 - Math.PI / 2;
-    const groupRadius = 220 + groups.length * 30;
+    const groupRadius = 250 + groups.length * 35;
     const gx = centerX + Math.cos(angle) * groupRadius;
     const gy = centerY + Math.sin(angle) * groupRadius;
 
-    const sorted = [...groupPosts].sort((a, b) => a.year - b.year);
+    // Sort by year for consistent ordering within group
+    const sorted = [...groupPosts].sort((a, b) => a.year - b.year || a.engine_name.localeCompare(b.engine_name));
     sorted.forEach((p, i) => {
-      const spread = sorted.length > 1 ? (i / (sorted.length - 1) - 0.5) * 200 : 0;
+      const spread = sorted.length > 1 ? (i / (sorted.length - 1) - 0.5) * 220 : 0;
       const perpAngle = angle + Math.PI / 2;
+      // Deterministic offset based on index instead of random
+      const offsetX = ((i % 3) - 1) * 15;
+      const offsetY = (Math.floor(i / 3) % 2 === 0 ? 1 : -1) * 10;
       positions.set(p.id, {
-        x: gx + Math.cos(perpAngle) * spread + (Math.random() - 0.5) * 30,
-        y: gy + Math.sin(perpAngle) * spread + (Math.random() - 0.5) * 30,
+        x: gx + Math.cos(perpAngle) * spread + offsetX,
+        y: gy + Math.sin(perpAngle) * spread + offsetY,
       });
     });
   });
