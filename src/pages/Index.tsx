@@ -34,8 +34,8 @@ const Index = () => {
 
   return (
     <div className="relative min-h-screen bg-background">
-      {/* 3D Asset Background - Right side */}
-      <div className="absolute top-0 right-0 w-1/2 h-[700px] z-0 opacity-40 pointer-events-none">
+      {/* 3D Asset Background */}
+      <div className="absolute inset-0 z-0 opacity-30 pointer-events-none">
         <HeroAsciiOne />
       </div>
 
