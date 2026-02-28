@@ -19,10 +19,10 @@ const CompanyFilter = ({ companies, selected, onToggle, onClearAll }: CompanyFil
 
       <button
         onClick={onClearAll}
-        className={`relative px-4 py-2 rounded-xl text-[11px] font-sans font-medium tracking-wide transition-all duration-400 border ${
+        className={`relative px-4 py-2 rounded-full text-[11px] font-sans font-medium tracking-wide transition-all duration-300 border ${
           isAllSelected
             ? "bg-foreground text-background border-foreground shadow-soft"
-            : "bg-transparent text-muted-foreground border-border/60 hover:border-foreground/20 hover:text-foreground/70"
+            : "bg-card text-muted-foreground border-border/50 hover:border-foreground/20 hover:text-foreground/70"
         }`}
       >
         All Engines
@@ -35,10 +35,10 @@ const CompanyFilter = ({ companies, selected, onToggle, onClearAll }: CompanyFil
             key={company.id}
             onClick={() => onToggle(company.id)}
             whileTap={{ scale: 0.97 }}
-            className={`relative px-4 py-2 rounded-xl text-[11px] font-sans font-medium tracking-wide transition-all duration-400 border ${
+            className={`relative px-4 py-2 rounded-full text-[11px] font-sans font-medium tracking-wide transition-all duration-300 border ${
               isActive
                 ? "border-transparent shadow-soft"
-                : "bg-transparent text-muted-foreground border-border/60 hover:border-foreground/20 hover:text-foreground/70"
+                : "bg-card text-muted-foreground border-border/50 hover:border-foreground/20 hover:text-foreground/70"
             }`}
             style={
               isActive

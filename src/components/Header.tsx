@@ -12,8 +12,8 @@ const Header = ({ searchQuery, onSearchChange }: HeaderProps) => {
   const [searchFocused, setSearchFocused] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/30">
-      <div className="max-w-[1600px] mx-auto px-8 py-4 flex items-center justify-between">
+    <header className="sticky top-0 z-50 bg-background/85 backdrop-blur-2xl border-b border-border/20">
+      <div className="max-w-[1600px] mx-auto px-8 py-3.5 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-3 group">
           <div className="w-9 h-9 rounded-xl gradient-gold flex items-center justify-center shadow-soft group-hover:shadow-glow transition-shadow duration-500">
             <span className="font-serif font-bold text-sm text-primary-foreground">E</span>
