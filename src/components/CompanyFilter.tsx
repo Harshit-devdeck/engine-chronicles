@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import type { Company } from "@/hooks/use-engine-data";
 
 interface CompanyFilterProps {
@@ -11,36 +12,55 @@ const CompanyFilter = ({ companies, selected, onToggle, onClearAll }: CompanyFil
   const isAllSelected = selected.length === 0;
 
   return (
-    <div className="flex items-center gap-3 flex-wrap">
+    <div className="flex items-center gap-2.5 flex-wrap">
+      <span className="text-[11px] font-sans font-medium tracking-widest uppercase text-muted-foreground mr-2">
+        Filter
+      </span>
+
       <button
         onClick={onClearAll}
-        className={`px-4 py-2 rounded-full text-xs font-sans font-medium tracking-wide transition-all duration-300 border ${
+        className={`relative px-4 py-2 rounded-full text-[11px] font-sans font-medium tracking-wide transition-all duration-400 border overflow-hidden ${
           isAllSelected
-            ? "bg-primary text-primary-foreground border-primary shadow-soft"
-            : "bg-transparent text-muted-foreground border-border hover:border-foreground/30"
+            ? "bg-foreground text-background border-foreground"
+            : "bg-transparent text-muted-foreground border-border hover:border-foreground/20 hover:text-foreground/70"
         }`}
       >
         All Engines
       </button>
+
       {companies.map((company) => {
         const isActive = selected.includes(company.id);
         return (
-          <button
+          <motion.button
             key={company.id}
             onClick={() => onToggle(company.id)}
-            className={`px-4 py-2 rounded-full text-xs font-sans font-medium tracking-wide transition-all duration-300 border ${
+            whileTap={{ scale: 0.97 }}
+            className={`relative px-4 py-2 rounded-full text-[11px] font-sans font-medium tracking-wide transition-all duration-400 border overflow-hidden ${
               isActive
-                ? "text-primary-foreground shadow-soft"
-                : "bg-transparent text-muted-foreground border-border hover:border-foreground/30"
+                ? "border-transparent"
+                : "bg-transparent text-muted-foreground border-border hover:border-foreground/20 hover:text-foreground/70"
             }`}
             style={
               isActive
-                ? { backgroundColor: company.color, borderColor: company.color }
+                ? {
+                    backgroundColor: company.color + "15",
+                    color: company.color,
+                    borderColor: company.color + "40",
+                  }
                 : undefined
             }
           >
-            {company.name}
-          </button>
+            {/* Active indicator dot */}
+            {isActive && (
+              <motion.span
+                layoutId="filter-dot"
+                className="absolute left-2 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full"
+                style={{ backgroundColor: company.color }}
+                transition={{ type: "spring", bounce: 0.25, duration: 0.4 }}
+              />
+            )}
+            <span className={isActive ? "ml-2" : ""}>{company.name}</span>
+          </motion.button>
         );
       })}
     </div>
