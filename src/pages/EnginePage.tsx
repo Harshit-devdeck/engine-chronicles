@@ -39,7 +39,7 @@ const EnginePage = () => {
             className="inline-flex items-center gap-2 text-[12px] font-sans font-medium text-muted-foreground hover:text-foreground transition-colors tracking-wide"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
-            Timeline
+            Network
           </Link>
           <div className="flex items-center gap-2">
             {post.companies?.map((c) => (
@@ -226,7 +226,7 @@ const EnginePage = () => {
         <div className="max-w-[720px] mx-auto px-8 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 text-[11px] font-sans text-muted-foreground hover:text-foreground transition-colors">
             <ArrowLeft className="w-3 h-3" />
-            Back to timeline
+            Back to network
           </Link>
           <p className="text-[10px] font-sans text-muted-foreground/50">
             © 2026 Engine Chronicle

@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { usePosts, useCompanies, useEngineRelationships } from "@/hooks/use-engine-data";
 import Header from "@/components/Header";
 import CompanyFilter from "@/components/CompanyFilter";
-import Timeline from "@/components/Timeline";
+import NetworkGraph from "@/components/NetworkGraph";
 
 const Index = () => {
   const { data: posts = [], isLoading: postsLoading } = usePosts();
@@ -34,8 +34,8 @@ const Index = () => {
       <Header searchQuery={searchQuery} onSearchChange={setSearchQuery} />
 
       <main>
-        {/* Hero section with gradient overlay */}
-        <section className="relative max-w-[1600px] mx-auto px-8 pt-20 pb-14">
+        {/* Hero section */}
+        <section className="relative max-w-[1600px] mx-auto px-8 pt-16 pb-10">
           <div className="absolute inset-0 gradient-hero pointer-events-none" />
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -44,23 +44,23 @@ const Index = () => {
             className="relative"
           >
             <p className="text-[11px] font-sans font-medium tracking-[0.3em] uppercase text-accent mb-4">
-              A Curated Automotive History
+              Interactive Knowledge Network
             </p>
             <h2 className="font-serif text-5xl md:text-6xl font-bold text-foreground leading-[1.1] max-w-2xl">
-              The Evolution of
+              Engine Lineage
               <br />
               <span className="bg-gradient-to-r from-foreground/80 via-foreground/60 to-accent bg-clip-text text-transparent">
-                Automotive Engines
+                Network Graph
               </span>
             </h2>
             <p className="mt-5 font-sans text-[15px] text-muted-foreground max-w-md leading-[1.7]">
-              A curated journey through the most significant powerplants in automotive history—from pioneering innovations to modern masterpieces.
+              Explore the interconnected evolution of automotive engines—collaborations, modifications, and licensing across manufacturers.
             </p>
           </motion.div>
         </section>
 
         {/* Company filter */}
-        <section className="max-w-[1600px] mx-auto px-8 pb-10">
+        <section className="max-w-[1600px] mx-auto px-8 pb-6">
           <CompanyFilter
             companies={companies}
             selected={selectedCompanies}
@@ -69,14 +69,14 @@ const Index = () => {
           />
         </section>
 
-        {/* Timeline */}
-        <section className="pb-20">
+        {/* Network Graph */}
+        <section className="max-w-[1600px] mx-auto px-8 pb-16">
           {postsLoading ? (
             <div className="flex items-center justify-center py-24">
               <div className="w-5 h-5 rounded-full border-2 border-accent border-t-transparent animate-spin" />
             </div>
           ) : (
-            <Timeline
+            <NetworkGraph
               posts={filteredBySearch}
               relationships={relationships}
               selectedCompanies={selectedCompanies}
@@ -91,12 +91,7 @@ const Index = () => {
               {[
                 { value: posts.length, label: "Engines Documented" },
                 { value: companies.length, label: "Manufacturers" },
-                {
-                  value: posts.length > 0
-                    ? `${Math.max(...posts.map((p) => p.year)) - Math.min(...posts.map((p) => p.year))}`
-                    : "—",
-                  label: "Years of History",
-                },
+                { value: relationships.length, label: "Connections Mapped" },
               ].map((stat, i) => (
                 <motion.div
                   key={stat.label}
