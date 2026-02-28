@@ -15,14 +15,6 @@ const Timeline = ({ posts, relationships, selectedCompanies }: TimelineProps) =>
   const [scrollLeft, setScrollLeft] = useState(0);
   const cardRefs = useRef<Map<string, HTMLDivElement>>(new Map());
 
-  const filteredPosts = useMemo(() => {
-    if (selectedCompanies.length === 0) return posts;
-    return posts.filter((p) =>
-      p.companies?.some((c) => selectedCompanies.includes(c.id))
-    );
-  }, [posts, selectedCompanies]);
-
-  // Determine which posts are dimmed (not matching filter but still shown for context)
   const allPostsWithDim = useMemo(() => {
     if (selectedCompanies.length === 0) return posts.map((p) => ({ ...p, dimmed: false }));
     return posts.map((p) => ({
@@ -52,7 +44,7 @@ const Timeline = ({ posts, relationships, selectedCompanies }: TimelineProps) =>
 
   // Connector lines SVG
   const [connectorPaths, setConnectorPaths] = useState<
-    { path: string; type: string; fromId: string; toId: string }[]
+    { path: string; type: string }[]
   >([]);
 
   const computeConnectors = useCallback(() => {
@@ -72,14 +64,14 @@ const Timeline = ({ posts, relationships, selectedCompanies }: TimelineProps) =>
       const toRect = toEl.getBoundingClientRect();
 
       const fromX = fromRect.left + fromRect.width / 2 - containerRect.left + scrollRef.current!.scrollLeft;
-      const fromY = fromRect.bottom - containerRect.top + 16;
+      const fromY = fromRect.bottom - containerRect.top + 20;
       const toX = toRect.left + toRect.width / 2 - containerRect.left + scrollRef.current!.scrollLeft;
-      const toY = toRect.bottom - containerRect.top + 16;
+      const toY = toRect.bottom - containerRect.top + 20;
 
-      const midY = Math.max(fromY, toY) + 30;
+      const midY = Math.max(fromY, toY) + 36;
       const path = `M ${fromX} ${fromY} C ${fromX} ${midY}, ${toX} ${midY}, ${toX} ${toY}`;
 
-      paths.push({ path, type: rel.relationship_type, fromId: rel.engine_id, toId: rel.related_engine_id });
+      paths.push({ path, type: rel.relationship_type });
     });
 
     setConnectorPaths(paths);
@@ -128,17 +120,6 @@ const Timeline = ({ posts, relationships, selectedCompanies }: TimelineProps) =>
     else cardRefs.current.delete(id);
   }, []);
 
-  const scrollToEngine = useCallback((engineId: string) => {
-    const el = cardRefs.current.get(engineId);
-    if (el && scrollRef.current) {
-      const containerRect = scrollRef.current.getBoundingClientRect();
-      const cardRect = el.getBoundingClientRect();
-      const targetScroll =
-        scrollRef.current.scrollLeft + cardRect.left - containerRect.left - containerRect.width / 2 + cardRect.width / 2;
-      scrollRef.current.scrollTo({ left: targetScroll, behavior: "smooth" });
-    }
-  }, []);
-
   if (posts.length === 0) {
     return (
       <div className="flex items-center justify-center py-24">
@@ -165,52 +146,42 @@ const Timeline = ({ posts, relationships, selectedCompanies }: TimelineProps) =>
           className="absolute inset-0 pointer-events-none z-[1]"
           style={{ width: scrollRef.current?.scrollWidth ?? "100%", height: "100%" }}
         >
+          <defs>
+            <linearGradient id="connector-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="hsl(var(--accent))" stopOpacity="0.5" />
+              <stop offset="50%" stopColor="hsl(var(--accent))" stopOpacity="0.25" />
+              <stop offset="100%" stopColor="hsl(var(--accent))" stopOpacity="0.5" />
+            </linearGradient>
+          </defs>
           {connectorPaths.map((cp, i) => (
-            <g key={i}>
-              <path
-                d={cp.path}
-                fill="none"
-                stroke="hsl(var(--accent))"
-                strokeWidth={1.5}
-                strokeDasharray="6 4"
-                opacity={0.35}
-              />
-              {/* Small label at midpoint */}
-              <text
-                x={0}
-                y={0}
-                fontSize={9}
-                fill="hsl(var(--muted-foreground))"
-                textAnchor="middle"
-                className="font-sans"
-                opacity={0.6}
-              >
-                {/* Label computed via path midpoint would need more logic */}
-              </text>
-            </g>
+            <path
+              key={i}
+              d={cp.path}
+              fill="none"
+              stroke="url(#connector-gradient)"
+              strokeWidth={1.5}
+              strokeDasharray="6 4"
+            />
           ))}
         </svg>
 
-        <div className="flex items-end pb-12 pt-6 px-12 min-w-max relative z-[2]">
-          {decades.map(([decade, deckPosts], di) => (
+        <div className="flex items-end pb-14 pt-6 px-12 min-w-max relative z-[2]">
+          {decades.map(([decade, deckPosts]) => (
             <div key={decade} className="flex items-end">
-              {/* Decade marker */}
-              <div className="flex flex-col items-center mr-8 mb-0">
-                <span className="font-serif text-lg font-semibold text-foreground/60 mb-3 tracking-tight">
+              {/* Decade marker — engineered precision */}
+              <div className="flex flex-col items-center mr-10 mb-0">
+                <span className="font-serif text-lg font-bold text-foreground/50 mb-3 tracking-tight">
                   {decade}s
                 </span>
-                <div className="w-px h-6 bg-gradient-to-b from-border to-transparent" />
-                {/* Decade dot on timeline */}
-                <div className="w-2 h-2 rounded-full bg-border mt-1" />
+                <div className="w-px h-8 bg-gradient-to-b from-accent/40 to-transparent" />
+                {/* Decade node */}
+                <div className="w-2.5 h-2.5 rounded-full bg-accent/40 mt-1 ring-2 ring-background" />
               </div>
 
               {/* Cards */}
               <div className="flex gap-8 mr-16">
                 {deckPosts.map((post) => (
-                  <div
-                    key={post.id}
-                    ref={(el) => setCardRef(post.id, el)}
-                  >
+                  <div key={post.id} ref={(el) => setCardRef(post.id, el)}>
                     <EngineCard post={post} dimmed={post.dimmed} />
                   </div>
                 ))}
@@ -219,23 +190,24 @@ const Timeline = ({ posts, relationships, selectedCompanies }: TimelineProps) =>
           ))}
         </div>
 
-        {/* Central timeline track */}
-        <div className="absolute bottom-[26px] left-0 right-0 h-px z-[1]">
-          <div className="h-full w-full bg-gradient-to-r from-transparent via-border to-transparent opacity-70" />
+        {/* Central timeline track — refined double line */}
+        <div className="absolute bottom-[30px] left-0 right-0 z-[1] pointer-events-none">
+          <div className="h-px w-full bg-gradient-to-r from-transparent via-border to-transparent opacity-60" />
+          <div className="h-px w-full bg-gradient-to-r from-transparent via-accent/20 to-transparent mt-[2px] opacity-40" />
         </div>
       </div>
 
       {/* Fade edges */}
-      <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-background to-transparent pointer-events-none z-10" />
-      <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-background to-transparent pointer-events-none z-10" />
+      <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-background to-transparent pointer-events-none z-10" />
+      <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-background to-transparent pointer-events-none z-10" />
 
       {/* Scroll hint */}
-      <div className="flex items-center justify-center mt-4 gap-2 opacity-40">
-        <div className="w-8 h-px bg-foreground/30" />
-        <span className="text-[10px] font-sans tracking-widest uppercase text-muted-foreground">
+      <div className="flex items-center justify-center mt-6 gap-3 opacity-35">
+        <div className="w-10 h-px bg-gradient-to-r from-transparent to-accent/40" />
+        <span className="text-[10px] font-sans tracking-[0.3em] uppercase text-muted-foreground">
           Scroll to explore
         </span>
-        <div className="w-8 h-px bg-foreground/30" />
+        <div className="w-10 h-px bg-gradient-to-l from-transparent to-accent/40" />
       </div>
     </div>
   );
