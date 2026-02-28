@@ -30,7 +30,7 @@ const Header = ({ searchQuery, onSearchChange }: HeaderProps) => {
 
         <nav className="hidden md:flex items-center gap-8">
           <Link to="/" className="text-[11px] font-sans font-medium tracking-widest uppercase text-foreground/60 hover:text-foreground transition-colors">
-            Timeline
+            Chronicle
           </Link>
           <span className="text-[11px] font-sans font-medium tracking-widest uppercase text-foreground/30 cursor-default">
             Archive
